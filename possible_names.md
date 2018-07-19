@@ -9,6 +9,7 @@
 * BIANCA -- needs an overly forced acronym otherwise my brain associates it with Figure 1.
 
 ![bianca](https://upload.wikimedia.org/wikipedia/en/e/eb/B_r_wedding.jpg)
+
 Figure 1: Ricky and Bianca's wedding, *Eastenders*
 
 
