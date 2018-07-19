@@ -1,13 +1,19 @@
 # The little telescope that could
 
-## Spectral response curves:
+## Where stuff is:
 
-* Grabbed spectral response curves from https://github.com/khufkens/pi-camera-response-curves
+* useful_things.md
+	- Contains links to useful stuff, e.g. 3dprint files for camera mount. 
+	- PLEASE ADD TO THIS
+* possible_names.md 
+	- ideas for names for the telescope
+* README.md
+	- This file
+* picamera
+	- everything to do with the camera	
+* docs
+	- anything that goes in here will go to github pages.
+	- Use for documentation, info etc.	
 
-* Look similar to the ones in Pagnutti et al. (2017), but they don't include their data.
 
-* TODO: 
-  - Compare phot filters to Pi response curves.
-  - Get response curve for NoIR camera
-  
-  
+
