@@ -14,6 +14,9 @@
 * docs
 	- anything that goes in here will go to github pages.
 	- Use for documentation, info etc.	
+* photos
+	- photos of telescope, camera etc
+	- please add dates to filenames
 
 
 
