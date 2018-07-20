@@ -8,7 +8,7 @@
 * MOTH -- **M**ini **O**bservatory of ba**TH** (from Eliot)
 * TUBS -- **T**elescope **U**nder the **B**ath **S**ky (from Misty), Slogan: “Bath TUBS: where starlight showers down”
 * Mount Glynis Observatory -- (from Malcolm)
-* BIANCA -- needs an overly forced acronym otherwise my brain associates it with Figure 1. Currently **B**ath something **A**stronomical **N**anoscale **C**osmology something....
+* BIANCA -- Needs work. Currently **B**ath something **A**stronomical **N**anoscale **C**osmology something.... See Figure 1. 
 
 ![bianca](https://upload.wikimedia.org/wikipedia/en/e/eb/B_r_wedding.jpg)
 
