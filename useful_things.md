@@ -7,3 +7,5 @@
 * https://www.thingiverse.com/thing:2455390 - Build your own spectrograph
 
 * https://www.thingiverse.com/thing:1719566 - Tracking system using an arduino (in French)
+
+* https://www.instructables.com/id/Nunchuck-Controlled-Telescope-Focuser/ - Arduino controlled focussing using wii nunchuck
