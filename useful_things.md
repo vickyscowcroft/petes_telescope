@@ -9,3 +9,5 @@
 * https://www.thingiverse.com/thing:1719566 - Tracking system using an arduino (in French)
 
 * https://www.instructables.com/id/Nunchuck-Controlled-Telescope-Focuser/ - Arduino controlled focussing using wii nunchuck
+
+* http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1971Obs....91..215C&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf - Journal article on the use of stepper motors in telescopes
