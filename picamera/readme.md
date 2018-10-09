@@ -1,5 +1,7 @@
 # picamera readme
 
+* SPIE paper on PiCamera: https://www.spiedigitallibrary.org/journals/Journal-of-Electronic-Imaging/volume-26/issue-01/013014/Laying-the-foundation-to-use-Raspberry-Pi-3-V2-camera/10.1117/1.JEI.26.1.013014.full?SSO=1
+
 
 ## Spectral response curves:
 
