@@ -8,6 +8,8 @@
 
 ## To add a new user:
 
+In a terminal:
+
 `` sudo addduser username ``
 
 then enter new password (it won't show up anything)
