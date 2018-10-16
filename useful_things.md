@@ -11,4 +11,4 @@
 * https://www.instructables.com/id/Nunchuck-Controlled-Telescope-Focuser/ - Arduino controlled focussing using wii nunchuck
 
 * http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1971Obs....91..215C&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf - Journal article on the use of stepper motors in telescopes
-* http://sy2000.blogspot.com/2014/04/simplify-my-autoguide-setup-and-reduce.html - Blog of a guy who has an auto guided telescope with raspberyy pi
+* http://sy2000.blogspot.com/2014/04/simplify-my-autoguide-setup-and-reduce.html - Blog of a guy who has an auto guided telescope with raspberry pi
