@@ -30,9 +30,10 @@ def capture_image_to_file(filepath):
     sleep(2)
     camera.capture(filepath)
     
-def start_display():
+def start_display(position_size=(100,100,256,192)):
     camera = PiCamera()
-    camera.start_preview()
+    #Allows the user to define the size of the preview window and its location on the screen 'x,y,w,h'
+    camera.start_preview(fullscreen = False, window = position_size)
 
 def stop_display():
     camera.stop_preview()
