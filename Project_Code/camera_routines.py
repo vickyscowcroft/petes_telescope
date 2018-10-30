@@ -9,6 +9,11 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 from time import sleep
 import numpy as np
+from skimage import data
+from skimage.feature import blob_dog, blob_log, blob_doh
+from skimage.color import rgb2gray
+from math import sqrt
+import matplotlib.pyplot as plt
 
 
 
@@ -53,3 +58,47 @@ def image_to_array():
         camera.capture(output,'rgb')
         return output
     
+def find_star_locations(imageArray):
+    image_grey = rgb2gray(imageArray)
+    blobs = blob_log(image_grey, max_sigma=30, num_sigma=10, threshold=.1)
+    blobs[:, 2] = blobs[:, 2] * sqrt(2)
+    return blobs
+    
+
+
+# =============================================================================
+# test = find_star_locations(image)
+# 
+# 
+# 
+# 
+# # Create an array representing a 1280x720 image of
+# # a cross through the center of the display. The shape of
+# # the array must be of the form (height, width, color)
+# a = np.zeros((720, 1280, 3), dtype=np.uint8)
+# a[360, :, :] = 0xff
+# a[:, 640, :] = 0xff
+# 
+# ax[idx].imshow(image, interpolation='nearest')
+# =============================================================================
+
+
+with picamera.PiCamera() as camera:
+    camera.resolution = (1280, 720)
+    camera.framerate = 24
+    camera.start_preview(fullscreen = False, window = position_size)
+    current_image = image_to_array()
+    stars_current = find_star_locations(current_image)
+    # Add the overlay directly into layer 3 with transparency;
+    # we can omit the size parameter of add_overlay as the
+    # size is the same as the camera's resolution
+    for blob in stars_current:
+        y, x, r = blob
+        c = plt.Circle((x, y), r, color='lime', linewidth=2, fill=False)
+        o = camera.add_overlay(np.getbuffer(c), layer=3, alpha=64)
+    try:
+        # Wait indefinitely until the user terminates the script
+        while True:
+            time.sleep(1)
+    finally:
+        camera.remove_overlay(o)
