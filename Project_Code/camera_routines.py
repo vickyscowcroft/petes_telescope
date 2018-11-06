@@ -5,8 +5,8 @@ Created on Tue Oct 30 10:52:46 2018
 @author: sgb35
 """
 from io import BytesIO
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+#from picamera.array import PiRGBArray
+#from picamera import PiCamera
 from time import sleep
 import numpy as np
 from skimage import data
@@ -31,9 +31,9 @@ def capture_image_to_file(filepath):
     camera = PiCamera()
     camera.resolution = CAMERA_RESOLUTION
     camera.start_preview()
-    
     sleep(2)
     camera.capture(filepath)
+    camera.stop_preview()
     
 def start_display(position_size=(100,100,256,192)):
     camera = PiCamera()
@@ -59,6 +59,12 @@ def image_to_array():
         return output
     
 def find_star_locations(imageArray):
+    '''
+    Function to locate bright spots on an image
+    
+    Input : RGB array of image
+    Returns: numpy array of bright spots y,x,r
+    '''
     image_grey = rgb2gray(imageArray)
     blobs = blob_log(image_grey, max_sigma=30, num_sigma=10, threshold=.1)
     blobs[:, 2] = blobs[:, 2] * sqrt(2)
@@ -81,24 +87,42 @@ def find_star_locations(imageArray):
 # 
 # ax[idx].imshow(image, interpolation='nearest')
 # =============================================================================
+def produce_overlay():
+    with picamera.PiCamera() as camera:
+        camera.resolution = CAMERA_RESOLUTION
+        camera.framerate = CAMERA_FRAMERATE
+        camera.start_preview(fullscreen = False, window = position_size)
+        current_image = image_to_array()
+        stars_current = find_star_locations(current_image)
+        # Add the overlay directly into layer 3 with transparency;
+        # we can omit the size parameter of add_overlay as the
+        # size is the same as the camera's resolution
+        for blob in stars_current:
+            y, x, r = blob
+            c = plt.Circle((x, y), r, color='lime', linewidth=2, fill=False)
+            o = camera.add_overlay(np.getbuffer(c), layer=3, alpha=64)
+        try:
+            # Wait indefinitely until the user terminates the script
+            while True:
+                time.sleep(1)
+        finally:
+            camera.remove_overlay(o)
 
 
-with picamera.PiCamera() as camera:
-    camera.resolution = (1280, 720)
-    camera.framerate = 24
-    camera.start_preview(fullscreen = False, window = position_size)
-    current_image = image_to_array()
-    stars_current = find_star_locations(current_image)
-    # Add the overlay directly into layer 3 with transparency;
-    # we can omit the size parameter of add_overlay as the
-    # size is the same as the camera's resolution
-    for blob in stars_current:
-        y, x, r = blob
-        c = plt.Circle((x, y), r, color='lime', linewidth=2, fill=False)
-        o = camera.add_overlay(np.getbuffer(c), layer=3, alpha=64)
-    try:
-        # Wait indefinitely until the user terminates the script
-        while True:
-            time.sleep(1)
-    finally:
-        camera.remove_overlay(o)
+# =============================================================================
+# import PIL.Image
+# img = PIL.Image.open('C:\Users\sgb35\Downloads\FirstPictureChimney_20181016.jpeg')
+# exif_data = img._getexif()
+# 
+# from PIL import Image
+# from PIL.ExifTags import TAGS
+#  
+# def get_exif(fn):
+#     ret = {}
+#     i = Image.open(fn)
+#     info = i._getexif()
+#     for tag, value in info.items():
+#         decoded = TAGS.get(tag, tag)
+#         ret[decoded] = value
+#     return ret
+# =============================================================================
