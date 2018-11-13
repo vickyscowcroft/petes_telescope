@@ -1,6 +1,12 @@
-from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor, Adafruit_StepperMotor
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Nov 13 14:50:55 2018
 
-import time
+@author: sgb35
+"""
+
+from Adafruit_MotorHAT import Adafruit_MotorHAT
+
 import atexit
 
 # create a default object, no changes to I2C address or frequency
@@ -17,8 +23,8 @@ atexit.register(turnOffMotors)
 
 class Motor:
     def __init__(self, motorPort):
-        self.motornumber = mh.getStepper(200, motorPort)    # 200 steps/rev, motor port selected
-        self.motornumber.setSpeed(3)              # 30 RPM
+        self.motornumber = mh.getStepper(48, motorPort)    # 48 steps/rev, motor port selected
+        self.motornumber.setSpeed(70)              # 70 standard (also 70rpm)
 
     def singleForward(self, numberSteps):
         print'{} single coil steps forward'.format(numberSteps)
@@ -54,20 +60,5 @@ class Motor:
     
 atexit.register(turnOffMotors)
 
-#Step Type Guide
-#Single Steps - this is the simplest type of stepping, and uses the least power.
-#It uses a single coil to 'hold' the motor in place.
-#
-#Double Steps - this is also fairly simple, except instead of a single coil,
-#it has two coils on at once.
-#For example, instead of just coil #1 on, you would have coil #1 and #2 on at once.
-#This uses more power (approx 2x) but is stronger than single stepping (by maybe 25%).
-#
-#Interleaved Steps - this is a mix of Single and Double stepping,
-#where we use single steps interleaved with double.
-#It has a little more strength than single stepping, and about 50% more power.
-#Tt makes your motor appear to have 2x as many steps, for a smoother transition between steps.
-#
-#Microstepping - this is where we use a mix of single stepping with Pulse Width Modulation
-#to slowly transition between steps.
-#It's slower than single stepping but has much higher precision. 
+altMotor = Motor(1)
+azMotor = Motor(2)
