@@ -1,26 +1,30 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Oct 30 10:52:46 2018
-
 @author: sgb35
 """
 from io import BytesIO
-#from picamera.array import PiRGBArray
-#from picamera import PiCamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+import picamera
 from time import sleep
 import numpy as np
-from skimage import data
+##from skimage import data
 from skimage.feature import blob_dog, blob_log, blob_doh
 from skimage.color import rgb2gray
 from math import sqrt
-import matplotlib.pyplot as plt
+##import matplotlib.pyplot as plt
 
 
-
+camera = PiCamera()
+camera.start_preview()
+sleep(10)
+camera.stop_preview()
 CAMERA_RESOLUTION = (1024,768)
 CAMERA_FRAMERATE = 24
 
-def capture_image_to_file(filepath):
+
+def capture_image_to_file(filepath, camera=camera):
     '''
     Function to capture immediate image to a file
     
@@ -28,34 +32,47 @@ def capture_image_to_file(filepath):
             path where image is to be stored
     Returns: None
     '''
-    camera = PiCamera()
+    try:
+        camera=PiCamera()
+    except picamera.exc.PiCameraMMALError:
+        print("Camera already running")
+    camera = camera
     camera.resolution = CAMERA_RESOLUTION
     camera.start_preview()
     sleep(2)
     camera.capture(filepath)
     camera.stop_preview()
     
-def start_display(position_size=(100,100,256,192)):
-    camera = PiCamera()
+def start_display(position_size=(100,100,256,192), camera=camera):
+    try:
+        camera=PiCamera()
+    except picamera.exc.PiCameraMMALError:
+        print("Camera already running")
     #Allows the user to define the size of the preview window and its location on the screen 'x,y,w,h'
     camera.start_preview(fullscreen = False, window = position_size)
 
 def stop_display():
     camera.stop_preview()
     
-def image_to_array(): 
+def image_to_array(camera=camera): 
     '''
     Function to capture image to a numpy array
     
     Input : None
     Returns: array containing image
     '''
-    with PiCamera() as camera:
+    try:
+        camera=PiCamera()
+    except picamera.exc.PiCameraMMALError:
+        print("Camera already running")
+          
+    with camera:
         camera.resolution = CAMERA_RESOLUTION
         camera.framerate = CAMERA_FRAMERATE
         sleep(2)
-        output = np.empty((768,1024,3), dtype = np.uint8)
+        output = np.empty((768*1024*3), dtype = np.uint8)
         camera.capture(output,'rgb')
+        output = output.reshape((768,1024,3))
         return output
     
 def find_star_locations(imageArray):
@@ -87,8 +104,8 @@ def find_star_locations(imageArray):
 # 
 # ax[idx].imshow(image, interpolation='nearest')
 # =============================================================================
-def produce_overlay():
-    with picamera.PiCamera() as camera:
+def produce_overlay(camera=camera):
+    with camera:
         camera.resolution = CAMERA_RESOLUTION
         camera.framerate = CAMERA_FRAMERATE
         camera.start_preview(fullscreen = False, window = position_size)
@@ -126,3 +143,4 @@ def produce_overlay():
 #         ret[decoded] = value
 #     return ret
 # =============================================================================
+
