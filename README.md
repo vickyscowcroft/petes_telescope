@@ -1,5 +1,7 @@
 # The little telescope that could
 
+* Added list of suggested background reading on variable stars [variable_stars.md](https://github.com/vickyscowcroft/petes_telescope/blob/master/variable_stars.md)
+
 ## Where stuff is:
 
 * useful_things.md
