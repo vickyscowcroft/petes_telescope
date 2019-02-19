@@ -4,7 +4,7 @@ Created on Tue Oct 30 15:02:06 2018
 @author: sgb35
 """
 
-from Project_routines import camera_routines as CR
+from Project_routines import camera_routines_2 as CR
 from Project_routines import stepper_routines as MR
 import time
 import numpy as np
@@ -31,44 +31,52 @@ def star_tracking():
             time.sleep(20)
     except KeyboardInterrupt:
         print('interrupted!')
-    
-    
-def centralise(reference_star):
-    altitude_movement = (PIXEL_WIDTH/2) - reference_star[0]
-    azimuth_movement = (PIXEL_LENGTH/2) - reference_star[1]
 
-    if abs(altitude_movement) < 15:
+
+def centralise(image_1, image_2):
+    shift = CR.drift_amount(image_1, image_2)
+    
+    altitude_movement = shift[0]
+    azimuth_movement = shift[1]
+
+    if abs(altitude_movement) < 5:
         print('Alt Perf')
         pass
-    elif altitude_movement < -15:
-        while altitude_movement < -15:
-            MR.altMotor.singleForward(int(-1*ALT_STEPS_PER_PIXEL*altitude_movement)+15)
-            print('recalculating altitude...\n')
-            reference_star = find_ref_star()
-            altitude_movement = (PIXEL_WIDTH/2) - reference_star[0]
-    elif altitude_movement > 15:
-        while altitude_movement > 15:
-            MR.altMotor.singleBackward(int(1*ALT_STEPS_PER_PIXEL*altitude_movement)+15)
+    elif altitude_movement < 0:
+        while altitude_movement < -5:
+            MR.altMotor.singleForward(int(-4*ALT_STEPS_PER_PIXEL*altitude_movement))
+            print('negative recalculating altitude...\n')
+            image_2 = CR.grey_image()
+            shift = CR.drift_amount(image_1, image_2)
+            altitude_movement = shift[0]
+    elif altitude_movement > 0:
+        while altitude_movement > 5:
+            MR.altMotor.singleBackward(int(4*ALT_STEPS_PER_PIXEL*altitude_movement))
             print('recalculating altidude...\n')
-            reference_star = find_ref_star()
-            altitude_movement = (PIXEL_WIDTH/2) - reference_star[0]
+            image_2 = CR.grey_image()
+            shift = CR.drift_amount(image_1, image_2)
+            altitude_movement = shift[0]
+##            image_2 = image_1
     
-    if abs(azimuth_movement) < 15:
+    if abs(azimuth_movement) < 5:
         pass
-    elif azimuth_movement > 15:
-        while azimuth_movement > 15:
-            MR.azMotor.singleForward(int(3*ALT_STEPS_PER_PIXEL*azimuth_movement)+15)
+    elif azimuth_movement > 0:
+        while azimuth_movement > 5:
+            MR.azMotor.singleForward(int(3*ALT_STEPS_PER_PIXEL*azimuth_movement))
             print('recalculating az...\n')
-            reference_star = find_ref_star()
-            azimuth_movement = (PIXEL_LENGTH/2) - reference_star[1]
-    elif azimuth_movement < -15:
-        while azimuth_movement < -15:
-            MR.azMotor.singleBackward(int(-3*ALT_STEPS_PER_PIXEL*azimuth_movement)+15)
+            image_2 = CR.grey_image()
+            shift = CR.drift_amount(image_1, image_2)
+            azimuth_movement = shift[1]
+    elif azimuth_movement < 0:
+        while azimuth_movement < -5:
+            MR.azMotor.singleBackward(int(-3*ALT_STEPS_PER_PIXEL*azimuth_movement))
             print('recalculatingaz...\n')
-            reference_star = find_ref_star()
-            azimuth_movement = (PIXEL_LENGTH/2) - reference_star[1]
+            image_2 = CR.grey_image()
+            shift = CR.drift_amount(image_1, image_2)
+            azimuth_movement = shift[1]
+##            image_2 = image_1
     print("DONE")
-    CR.start_display()
+    CR.capture_image_to_file('Images/final.png')
             
             
 ##    #####CURRENTLY NO IDEA HOW THIS WORKS#####
@@ -88,9 +96,10 @@ def centralise(reference_star):
         
 ###TEST SECTION
         
-#reference_star = find_ref_star()
-#
-#
-#import PIL.Image
-#img = PIL.Image.open('H:\FinalYearProject\single_star.jpg')
-#img = np.array(img)
+image_first = CR.grey_image()
+CR.capture_image_to_file('Images/first_position.png')
+
+raw_input('Waiting for key press...')
+
+image_second = CR.grey_image()
+centralise(image_first, image_second)
